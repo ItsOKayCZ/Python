@@ -19,13 +19,11 @@ class Window:
 		# WINDOW -----------------------
 		this.window = Tk()
 		this.window.title("Recipes")
-		# this.window.iconbitmap("favicon.ico")
 		this.window.resizable(width=False, height=False)
 		this.window.protocol("WM_DELETE_WINDOW", this.window.destroy)
-
 		this.windowWidth = 1000
 		this.windowHeight = 800
-		this.window.geometry("%sx%s" % (this.windowWidth, this.windowHeight))
+		this.window.geometry("%sx%s" % (this.windowWidth, this.windowHeight ))
 
 		this.textHeight = 21
 
