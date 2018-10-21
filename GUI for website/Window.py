@@ -21,9 +21,10 @@ class Window:
 		this.window.title("Recipes")
 		this.window.resizable(width=False, height=False)
 		this.window.protocol("WM_DELETE_WINDOW", this.window.destroy)
+		
 		this.windowWidth = 1000
 		this.windowHeight = 800
-		this.window.geometry("%sx%s" % (this.windowWidth, this.windowHeight ))
+		this.window.geometry("%sx%s" % (this.windowWidth, this.windowHeight))
 
 		this.textHeight = 21
 
