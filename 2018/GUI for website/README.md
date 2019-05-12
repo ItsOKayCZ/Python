@@ -1,5 +1,5 @@
 # Header 1
 ## Header 2
-**Bold**
+__Bold__
 _Italic_
 [Click me for github](www.github.com)
