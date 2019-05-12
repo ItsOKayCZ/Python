@@ -24,7 +24,7 @@ In the dropdown there will be listed all the pre-existing categories or you can 
 4. Press __Done__
 
 ### Selecting an image
-Supported image formats: JPEG, PNG
+Supported image formats: JPEG, PNG  
 Pressing __Select image__ will open an explorer. Select the image that you will like to have with the recipe.
 
 After filling all of the text forms (except when deleting), press __Accept__ at the bottom of the window and it will send a request to the web application.
