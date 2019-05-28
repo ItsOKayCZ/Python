@@ -1,13 +1,14 @@
 # GUI for controling content on my website
 
 ## How to
-First you need to download the [Web application](https://github.com/ItsOKayCZ/Web/tree/master/2018/Recipe%20Website) and in Window.py specify the IP, port, username and password. Then run the Web application and launch main.py.
+First you need to download the [Web application](https://github.com/ItsOKayCZ/Web/tree/master/2018/Recipe%20Website) and in Window.py specify the IP, port, username and password. Then run the Web application and launch main.py.  
 
-__P.S:__ You need to specift the port in the [Web application](https://github.com/ItsOKayCZ/Web/tree/master/2018/Recipe%20Website).
-The default port is 12000.
+__P.S:__ You need to specify the port in the [Web application](https://github.com/ItsOKayCZ/Web/tree/master/2018/Recipe%20Website).  
+The default port is 12000.  
 
 ## Graphical user interface (GUI)
-### Choose an option
+### Choose an option  
+
 Choose if you want to:
 * Add a recipe
     * Will add a recipe to the web application
