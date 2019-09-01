@@ -15,7 +15,7 @@ class NeuralNetwork:
     this.outputWeights = np.random.uniform(low=-1, high=1, size=(this.hiddenNodes, this.outputNodes))
     this.outputBias = np.random.uniform(size=(1, this.outputNodes))
 
-    this.lr = 0.01
+    this.lr = 0.1
 
     print("Hidden weights:")
     print(this.hiddenWeights)
