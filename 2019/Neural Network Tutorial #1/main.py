@@ -10,7 +10,6 @@ test = datasets.MNIST("", train=False, download=True, transform=transforms.Compo
 trainset = torch.utils.data.DataLoader(train, batch_size=10, shuffle=True)
 testset = torch.utils.data.DataLoader(test, batch_size=10, shuffle=True)
 
-
 import torch.nn as nn
 import torch.nn.functional as F
 

@@ -3,6 +3,18 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+
+if(torch.cuda.is_available()):
+    print("Running on GPU")
+    device = torch.device("cuda:0")
+else:
+    print("Running on CPU")
+    device = torch.device("cpu")
+
 REBUILD_DATA = False
 
 class CatsVsDogs():
@@ -43,17 +55,15 @@ if(REBUILD_DATA):
     net = CatsVsDogs()
     net.getTrainingData()
 
+print("[#] Loading data")
 trainingData = np.load("trainingData.npy", allow_pickle=True)
+print("[#] Done loading data")
 
 # import matplotlib.pyplot as plt
 #
 # print(trainingData[1])
 # plt.imshow(trainingData[1][0], cmap="gray")
 # plt.show()
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 class Net(nn.Module):
     def __init__(self):
@@ -88,17 +98,43 @@ class Net(nn.Module):
 
         return F.softmax(x, dim=1)
 
-net = Net()
+def fwdPass(X, y, train=False):
+    if(train):
+        net.zero_grad()
 
-import torch.optim as optim
+    outputs = net(X)
+    matches = [torch.argmax(i) == torch.argmax(j) for i,j in zip(outputs, y)]
+
+    acc = matches.count(True) / len(matches)
+    loss = lossFunction(outputs, y)
+
+    if(train):
+        loss.backward()
+        optimizer.step()
+    return acc, loss
+
+def test(size=32):
+    randomStart = np.random.randint(len(testX) - size)
+    X, y = testX[randomStart:randomStart + size], testy[randomStart:randomStart + size]
+    with torch.no_grad():
+        valAcc, valLoss = fwdPass(X.view(-1, 1, 50, 50).to(device), y.to(device))
+    return valAcc, valLoss
+
+import time
+
+MODEL_NAME = "model-{0}".format(int(time.time()))
+
+net = Net().to(device)
+
 optimizer = optim.Adam(net.parameters(), lr=0.001)
 lossFunction = nn.MSELoss()
+
+print("Model: {0}".format(MODEL_NAME))
 
 X = torch.Tensor([i[0] for i in trainingData]).view(-1, 50, 50)
 X = X/255.0
 
 y = torch.Tensor([i[1] for i in trainingData])
-
 
 VAL_PCT = 0.1
 valSize = int(len(X) * VAL_PCT)
@@ -109,39 +145,22 @@ trainy = y[:-valSize]
 testX = X[-valSize:]
 testy = y[-valSize:]
 
+def train():
+    BATCH_SIZE = 100
+    EPOCHS = 5
 
-BATCH_SIZE = 100
-EPOCHS = 3
-print("[#] Training")
-for epoch in range(EPOCHS):
-    print("Epoch:", epoch)
-    for i in tqdm(range(0, len(trainX), BATCH_SIZE)):
+    with open("model.log", "a") as f:
+        for epoch in range(EPOCHS):
+            print("Epoch: {0}/{1}".format(epoch + 1, EPOCHS))
 
-        batchX = trainX[i:i + BATCH_SIZE].view(-1, 1, 50, 50)
-        batchy = trainy[i:i + BATCH_SIZE]
+            for i in tqdm(range(0, len(trainX), BATCH_SIZE)):
+                batchX = trainX[i:i + BATCH_SIZE].view(-1, 1, 50, 50).to(device)
+                batchy = trainy[i:i + BATCH_SIZE].to(device)
 
-        net.zero_grad()
+                acc, loss = fwdPass(batchX, batchy, train=True)
 
-        outputs = net(batchX)
+                if(i % 50 == 0):
+                    valAcc, valLoss = test(size=100)
+                    f.write("{0},{1},{2},{3},{4},{5}\n".format(MODEL_NAME, round(time.time(), 3), round(float(acc), 2), round(float(loss), 4), round(float(valAcc), 2), round(float(valLoss), 4)))
 
-        loss = lossFunction(outputs, batchy)
-        loss.backward()
-        optimizer.step()
-print("[#] End of training")
-
-correct = 0
-total = 0
-with torch.no_grad():
-    for i in tqdm(range(len(testX))):
-        realClass = torch.argmax(testy[i])
-        netOut = net(testX[i].view(-1, 1, 50, 50))[0]
-        predictedClass = torch.argmax(netOut)
-
-        if(predictedClass == realClass):
-            correct += 1
-        total += 1
-print("Accuracy:", round(correct/total, 3))
-
-# print("Saving model")
-# torch.save(net.state_dict(), "savedModel")
-# net.load_state_dict(torch.load("savedModel"))
+train()
