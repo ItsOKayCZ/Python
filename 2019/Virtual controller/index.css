@@ -1,0 +1,61 @@
+button{
+  position: absolute;
+
+  user-select: none;
+  width: 100px;
+  height: 100px;
+
+  border: 1px solid black;
+  background-color: #1be02b;
+  /* font-size: 8em; */
+}
+
+.left:active, .left::selection, .right:active, .right::selection,
+.up:active, .up::selection, .down:active, .down::selection,
+.interact:active, .interact::selection, .jump:active, .jump::selection{
+  background-color: red;
+}
+
+.up{
+  top: 0;
+  left: 0;
+
+  width: 25%;
+  height: 50%;
+}
+.down{
+  top: 0;
+  left: 25%;
+
+  width: 25%;
+  height: 50%;
+}
+
+.left, .right{
+  height: 50%;
+  width: 25%;
+}
+.left{
+  top: 50%;
+  left: 0;
+}
+
+.right{
+  top: 50%;
+  left: 25%;
+}
+
+.interact{
+  top: 0;
+  left: 50%;
+
+  height: 50%;
+  width: 50%;
+}
+
+.jump{
+  top: 50%;
+  left: 50%;
+  height: 50%;
+  width: 50%;
+}
