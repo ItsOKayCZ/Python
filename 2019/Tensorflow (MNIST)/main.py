@@ -24,7 +24,8 @@ if(not SAVED):
     x_train, x_test = x_train / 255.0, x_test / 255.0
     x_train = x_train.reshape(60000, 28, 28, 1)
     x_test = x_test.reshape(10000, 28, 28, 1)
-
+    print(y_train)
+    os.exit()
     model = tf.keras.models.Sequential([
         tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu", input_shape=(28, 28, 1)),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),

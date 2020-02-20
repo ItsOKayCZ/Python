@@ -1,2 +1,0 @@
-# TODO
-Add the guessed number by the model
