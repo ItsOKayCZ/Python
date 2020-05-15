@@ -2,7 +2,7 @@ import socket
 import sys
 
 host = ""
-port = 8080
+port = 1337
 
 localIP = [l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
 if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)),
